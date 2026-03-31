@@ -20,10 +20,10 @@ export default function App() {
 
   const { pseudonymize, depseudonymize } = usePipeline(mappingSet)
 
-  const pseudonymized = pseudonymize(inputText)
+  const hasMappings = mappingSet.mappings.length > 0
+  const pseudonymized = hasMappings ? pseudonymize(inputText) : ''
   const depseudonymized = depseudonymize(aiResponse)
 
-  const hasMappings = mappingSet.mappings.length > 0
   const currentStep: 1 | 2 | 3 = aiResponse ? 3 : hasMappings ? 2 : 1
 
   function handleAddMapping(realValue: string, pseudonym: string, category: PiiCategory) {

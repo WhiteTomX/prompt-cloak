@@ -46,10 +46,6 @@ test.describe('Selection Popup — Dismissal Behaviors', () => {
 
     // expect: The Mappings count remains 0
     await expect(page.getByRole('heading', { name: 'Mappings (0)' })).toBeVisible();
-
-    // expect: The Pseudonymized output still mirrors the original input unchanged
-    await expect(inputTextarea).toHaveValue('John Smith');
-    await expect(pseudonymizedOutput).toHaveText('John Smith');
   });
 
   test('Dismiss popup using the Escape key', async ({ page }) => {
