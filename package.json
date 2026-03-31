@@ -8,9 +8,10 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test": "pnpm test:vitest && pnpm test:playwright",
+    "test:vitest": "vitest run",
+    "test:playwright": "playwright test",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "react": "^19.2.4",
