@@ -1,0 +1,39 @@
+/* ── AddMappingForm ────────────────────────────────────────────────── */
+.add-mapping-form {
+  padding: 8px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.add-mapping-form .form-row {
+  display: flex;
+  gap: 6px;
+}
+
+.add-mapping-form input[type="text"],
+.add-mapping-form select {
+  flex: 1;
+  font-size: 12px;
+  padding: 5px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font);
+  min-width: 0;
+}
+
+.add-mapping-form input[type="text"]:focus,
+.add-mapping-form select:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+}
+
+.form-error {
+  font-size: 11px;
+  color: var(--color-danger);
+  padding: 0 2px;
+}

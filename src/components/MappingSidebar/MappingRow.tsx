@@ -1,15 +1,6 @@
-import type { PiiMapping, PiiCategory } from '../../types'
-
-const CATEGORY_LABELS: Record<PiiCategory, string> = {
-  name: 'Name',
-  email: 'Email',
-  address: 'Address',
-  phone: 'Phone',
-  date_of_birth: 'DOB',
-  id_number: 'ID',
-  company: 'Company',
-  other: 'Other',
-}
+import './MappingRow.css'
+import type { PiiMapping } from '../../types'
+import { CATEGORY_LABELS_SHORT } from '../../constants/categories'
 
 interface Props {
   mapping: PiiMapping
@@ -38,11 +29,12 @@ export function MappingRow({ mapping, onUpdate, onRemove }: Props) {
         className="btn-danger"
         onClick={() => onRemove(mapping.id)}
         title="Remove mapping"
+        aria-label={`Remove mapping for ${mapping.realValue}`}
       >
         ×
       </button>
       <span className={`category-badge cat-${mapping.category}`}>
-        {CATEGORY_LABELS[mapping.category]}
+        {CATEGORY_LABELS_SHORT[mapping.category]}
       </span>
     </div>
   )

@@ -1,34 +1,28 @@
 import { useState } from 'react'
+import './AddMappingForm.css'
 import type { PiiCategory } from '../../types'
-
-const CATEGORIES: PiiCategory[] = [
-  'name', 'email', 'address', 'phone', 'date_of_birth', 'id_number', 'company', 'other',
-]
-
-const CATEGORY_LABELS: Record<PiiCategory, string> = {
-  name: 'Name',
-  email: 'Email',
-  address: 'Address',
-  phone: 'Phone',
-  date_of_birth: 'Date of Birth',
-  id_number: 'ID Number',
-  company: 'Company',
-  other: 'Other',
-}
+import { CATEGORIES, CATEGORY_LABELS } from '../../constants/categories'
+import type { AddMappingResult } from '../../hooks/useMappings'
 
 interface Props {
-  onAdd: (realValue: string, pseudonym: string, category: PiiCategory) => void
+  onAdd: (realValue: string, pseudonym: string, category: PiiCategory) => AddMappingResult
 }
 
 export function AddMappingForm({ onAdd }: Props) {
   const [realValue, setRealValue] = useState('')
   const [pseudonym, setPseudonym] = useState('')
   const [category, setCategory] = useState<PiiCategory>('name')
+  const [error, setError] = useState('')
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!realValue.trim() || !pseudonym.trim()) return
-    onAdd(realValue.trim(), pseudonym.trim(), category)
+    const result = onAdd(realValue.trim(), pseudonym.trim(), category)
+    if (!result.added) {
+      setError(result.reason ?? 'Duplicate mapping')
+      return
+    }
+    setError('')
     setRealValue('')
     setPseudonym('')
   }
@@ -40,7 +34,7 @@ export function AddMappingForm({ onAdd }: Props) {
           type="text"
           placeholder="Real value"
           value={realValue}
-          onChange={e => setRealValue(e.target.value)}
+          onChange={e => { setRealValue(e.target.value); setError('') }}
         />
         <input
           type="text"
@@ -49,6 +43,7 @@ export function AddMappingForm({ onAdd }: Props) {
           onChange={e => setPseudonym(e.target.value)}
         />
       </div>
+      {error && <div className="form-error">{error}</div>}
       <div className="form-row">
         <select value={category} onChange={e => setCategory(e.target.value as PiiCategory)}>
           {CATEGORIES.map(c => (

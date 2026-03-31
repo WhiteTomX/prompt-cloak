@@ -1,0 +1,9 @@
+/* ── Import/Export controls ────────────────────────────────────────── */
+.import-export {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+}

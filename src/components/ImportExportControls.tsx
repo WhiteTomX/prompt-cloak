@@ -1,6 +1,8 @@
 import { useRef } from 'react'
+import './ImportExportControls.css'
 import type { MappingSet } from '../types'
 import { exportMappings, importMappings } from '../storage/fileIO'
+import { useToast } from './Toast'
 
 interface Props {
   mappingSet: MappingSet
@@ -9,9 +11,11 @@ interface Props {
 
 export function ImportExportControls({ mappingSet, onReplace }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const toast = useToast()
 
   function handleExport() {
     exportMappings(mappingSet)
+    toast.show('Mappings exported', 'success')
   }
 
   function handleImportClick() {
@@ -24,8 +28,9 @@ export function ImportExportControls({ mappingSet, onReplace }: Props) {
     try {
       const ms = await importMappings(file)
       onReplace(ms)
+      toast.show(`Imported ${ms.mappings.length} mappings`, 'success')
     } catch (err) {
-      alert((err as Error).message)
+      toast.show((err as Error).message, 'error')
     } finally {
       e.target.value = ''
     }

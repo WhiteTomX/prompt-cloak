@@ -104,7 +104,7 @@ test.describe('Selection Popup — Happy Path', () => {
     await expect(mappingRow.getByRole('textbox', { name: 'Real value' })).toHaveValue('John');
     await expect(mappingRow.getByRole('textbox', { name: 'Pseudonym' })).toHaveValue('PERSON_1');
     await expect(mappingRow.getByText('Name')).toBeVisible();
-    await expect(mappingRow.getByRole('button', { name: '×' })).toBeVisible();
+    await expect(mappingRow.getByRole('button', { name: /Remove mapping/ })).toBeVisible();
 
     // Verify Pseudonymized output replaces 'John' with 'PERSON_1'
     await expect(page.locator('.panel-body').filter({ hasText: 'PERSON_1' }).first()).toBeVisible();

@@ -1,27 +1,35 @@
 import { useState } from 'react'
+import './ResultPanel.css'
+import { useToast } from './Toast'
 
 interface Props {
   pseudonymized: string
   depseudonymized: string
   onAiResponseChange: (v: string) => void
   aiResponse: string
+  active?: boolean
 }
 
-export function ResultPanel({ pseudonymized, depseudonymized, onAiResponseChange, aiResponse }: Props) {
+export function ResultPanel({ pseudonymized, depseudonymized, onAiResponseChange, aiResponse, active }: Props) {
   const [copied, setCopied] = useState<'pseudo' | 'depseudo' | null>(null)
+  const toast = useToast()
 
   function copy(text: string, key: 'pseudo' | 'depseudo') {
     navigator.clipboard.writeText(text)
     setCopied(key)
     setTimeout(() => setCopied(null), 1500)
+    toast.show('Copied to clipboard', 'success')
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: 12, minHeight: 0 }}>
-      {/* Pseudonymized output */}
-      <div className="panel" style={{ flex: 1 }}>
+    <div className="result-panel-wrapper">
+      {/* Step 2: Pseudonymized output */}
+      <div className="panel" data-active={active}>
         <div className="panel-header">
-          <h2>Pseudonymized — Send to AI</h2>
+          <h2>
+            <span className="step-badge">2</span>
+            Pseudonymized — Send to AI
+          </h2>
           <button
             className="btn-ghost"
             onClick={() => copy(pseudonymized, 'pseudo')}
@@ -35,16 +43,23 @@ export function ResultPanel({ pseudonymized, depseudonymized, onAiResponseChange
             <div className="output-text">{pseudonymized}</div>
           ) : (
             <div className="output-text placeholder">
-              Pseudonymized output will appear here once you add mappings and type in the input.
+              <div className="result-empty-state">
+                <div className="empty-step-number">2</div>
+                <h3>Pseudonymized output</h3>
+                <p>Your text with sensitive values replaced will appear here. Copy it and send to your AI assistant.</p>
+              </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* AI response input + de-pseudonymized output */}
-      <div className="panel" style={{ flex: 1 }}>
+      {/* Step 3: AI response + de-pseudonymized output */}
+      <div className="panel" data-active={active}>
         <div className="panel-header">
-          <h2>AI Response — Paste Here</h2>
+          <h2>
+            <span className="step-badge">3</span>
+            AI Response &amp; Result
+          </h2>
         </div>
         <div className="panel-body">
           <textarea
@@ -52,13 +67,12 @@ export function ResultPanel({ pseudonymized, depseudonymized, onAiResponseChange
             onChange={e => onAiResponseChange(e.target.value)}
             placeholder="Paste the AI's response here to reveal the original values."
             spellCheck={false}
-            style={{ flex: '0 0 40%', borderBottom: '1px solid var(--color-border)' }}
+            className="ai-response-textarea"
+            aria-label="AI response"
           />
-          <div
-            className="panel-header"
-            style={{ borderTop: 'none', borderBottom: '1px solid var(--color-border)' }}
-          >
-            <h2>De-pseudonymized</h2>
+          <div className="result-arrow-divider">
+            <span className="result-arrow">↓</span>
+            <span className="result-arrow-label">De-pseudonymized</span>
             <button
               className="btn-ghost"
               onClick={() => copy(depseudonymized, 'depseudo')}
@@ -71,7 +85,11 @@ export function ResultPanel({ pseudonymized, depseudonymized, onAiResponseChange
             <div className="output-text">{depseudonymized}</div>
           ) : (
             <div className="output-text placeholder">
-              De-pseudonymized response will appear here.
+              <div className="result-empty-state">
+                <div className="empty-step-number">3</div>
+                <h3>De-pseudonymized result</h3>
+                <p>Paste the AI's response above and the original values will be restored here automatically.</p>
+              </div>
             </div>
           )}
         </div>

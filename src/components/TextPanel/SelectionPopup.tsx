@@ -1,20 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
+import './SelectionPopup.css'
 import type { PiiCategory, PiiMapping } from '../../types'
-
-const CATEGORIES: PiiCategory[] = [
-  'name', 'email', 'address', 'phone', 'date_of_birth', 'id_number', 'company', 'other',
-]
-
-const CATEGORY_LABELS: Record<PiiCategory, string> = {
-  name: 'Name',
-  email: 'Email',
-  address: 'Address',
-  phone: 'Phone',
-  date_of_birth: 'Date of Birth',
-  id_number: 'ID Number',
-  company: 'Company',
-  other: 'Other',
-}
+import { CATEGORIES, CATEGORY_LABELS } from '../../constants/categories'
 
 interface Props {
   selectedText: string
@@ -55,6 +42,8 @@ export function SelectionPopup({ selectedText, anchorRect, existingMapping, onCo
       className="selection-popup"
       style={{ top, left }}
       onKeyDown={handleKeyDown}
+      role="dialog"
+      aria-label="Create pseudonym mapping"
     >
       <div className="selected-text">{selectedText}</div>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
