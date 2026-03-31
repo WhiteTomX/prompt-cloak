@@ -75,7 +75,7 @@ export default function App() {
           onClear={clearMappings}
           onReplace={replaceMappingSet}
           open={sidebarOpen}
-          saveCount={saveCount}
+          lastSaved={saveCount}
         />
       </div>
     </ToastProvider>
