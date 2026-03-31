@@ -64,7 +64,7 @@ export function useTextSelection() {
     const end = el.selectionEnd
     const selected = el.value.slice(start, end).trim()
 
-    if (!selected) {
+    if (!selected || !/\w/.test(selected)) {
       setSelection({ text: '', rect: null })
       return
     }

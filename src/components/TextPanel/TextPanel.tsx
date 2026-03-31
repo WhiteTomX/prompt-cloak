@@ -1,15 +1,17 @@
 import { useEffect, useRef } from 'react'
-import type { PiiCategory } from '../../types'
+import type { PiiCategory, PiiMapping } from '../../types'
 import { useTextSelection } from '../../hooks/useTextSelection'
 import { SelectionPopup } from './SelectionPopup'
 
 interface Props {
   value: string
   onChange: (v: string) => void
+  mappings: PiiMapping[]
   onAddMapping: (realValue: string, pseudonym: string, category: PiiCategory) => void
+  onUpdateMapping: (id: string, updates: Partial<Omit<PiiMapping, 'id'>>) => void
 }
 
-export function TextPanel({ value, onChange, onAddMapping }: Props) {
+export function TextPanel({ value, onChange, mappings, onAddMapping, onUpdateMapping }: Props) {
   const { selection, textareaRef, handleSelect, clearSelection } = useTextSelection()
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -25,8 +27,16 @@ export function TextPanel({ value, onChange, onAddMapping }: Props) {
     return () => document.removeEventListener('mousedown', handler)
   }, [clearSelection])
 
+  const existingMapping = mappings.find(
+    m => m.realValue.toLowerCase() === selection.text.toLowerCase()
+  ) ?? null
+
   function handleConfirm(pseudonym: string, category: PiiCategory) {
-    onAddMapping(selection.text, pseudonym, category)
+    if (existingMapping) {
+      onUpdateMapping(existingMapping.id, { pseudonym, category })
+    } else {
+      onAddMapping(selection.text, pseudonym, category)
+    }
     clearSelection()
   }
 
@@ -59,6 +69,7 @@ export function TextPanel({ value, onChange, onAddMapping }: Props) {
         <SelectionPopup
           selectedText={selection.text}
           anchorRect={selection.rect}
+          existingMapping={existingMapping}
           onConfirm={handleConfirm}
           onCancel={clearSelection}
         />

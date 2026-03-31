@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import type { PiiCategory } from '../../types'
+import type { PiiCategory, PiiMapping } from '../../types'
 
 const CATEGORIES: PiiCategory[] = [
   'name', 'email', 'address', 'phone', 'date_of_birth', 'id_number', 'company', 'other',
@@ -19,13 +19,14 @@ const CATEGORY_LABELS: Record<PiiCategory, string> = {
 interface Props {
   selectedText: string
   anchorRect: DOMRect
+  existingMapping: PiiMapping | null
   onConfirm: (pseudonym: string, category: PiiCategory) => void
   onCancel: () => void
 }
 
-export function SelectionPopup({ selectedText, anchorRect, onConfirm, onCancel }: Props) {
-  const [pseudonym, setPseudonym] = useState('')
-  const [category, setCategory] = useState<PiiCategory>('name')
+export function SelectionPopup({ selectedText, anchorRect, existingMapping, onConfirm, onCancel }: Props) {
+  const [pseudonym, setPseudonym] = useState(existingMapping?.pseudonym ?? '')
+  const [category, setCategory] = useState<PiiCategory>(existingMapping?.category ?? 'name')
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -75,7 +76,7 @@ export function SelectionPopup({ selectedText, anchorRect, onConfirm, onCancel }
         <div className="popup-actions">
           <button type="button" className="btn-ghost" onClick={onCancel}>Cancel</button>
           <button type="submit" className="btn-primary" disabled={!pseudonym.trim()}>
-            Add Mapping
+            {existingMapping ? 'Update' : 'Add Mapping'}
           </button>
         </div>
       </form>

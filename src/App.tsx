@@ -31,7 +31,7 @@ export default function App() {
       </header>
 
       <div className="main-area" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, padding: 12 }}>
-        <TextPanel value={inputText} onChange={setInputText} onAddMapping={handleAddMapping} />
+        <TextPanel value={inputText} onChange={setInputText} mappings={mappingSet.mappings} onAddMapping={handleAddMapping} onUpdateMapping={updateMapping} />
         <ResultPanel
           pseudonymized={pseudonymized}
           depseudonymized={depseudonymized}
