@@ -15,6 +15,28 @@
   position: relative;
 }
 
+/* ── Highlight backdrop (behind transparent textarea) ─────────────── */
+.text-panel-backdrop {
+  position: absolute;
+  inset: 0;
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow: hidden;
+  color: transparent;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.text-panel-body textarea {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
 .text-panel-empty {
   position: absolute;
   inset: 0;

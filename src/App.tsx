@@ -61,6 +61,7 @@ export default function App() {
             depseudonymized={depseudonymized}
             aiResponse={aiResponse}
             onAiResponseChange={setAiResponse}
+            mappings={mappingSet.mappings}
             active={currentStep >= 2}
           />
         </div>

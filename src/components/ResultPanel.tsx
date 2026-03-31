@@ -1,16 +1,19 @@
 import { useState } from 'react'
 import './ResultPanel.css'
 import { useToast } from './Toast'
+import { HighlightedText } from './HighlightedText'
+import type { PiiMapping } from '../types'
 
 interface Props {
   pseudonymized: string
   depseudonymized: string
   onAiResponseChange: (v: string) => void
   aiResponse: string
+  mappings: PiiMapping[]
   active?: boolean
 }
 
-export function ResultPanel({ pseudonymized, depseudonymized, onAiResponseChange, aiResponse, active }: Props) {
+export function ResultPanel({ pseudonymized, depseudonymized, onAiResponseChange, aiResponse, mappings, active }: Props) {
   const [copied, setCopied] = useState<'pseudo' | 'depseudo' | null>(null)
   const toast = useToast()
 
@@ -40,7 +43,7 @@ export function ResultPanel({ pseudonymized, depseudonymized, onAiResponseChange
         </div>
         <div className="panel-body">
           {pseudonymized ? (
-            <div className="output-text">{pseudonymized}</div>
+            <div className="output-text"><HighlightedText text={pseudonymized} mappings={mappings} mode="pseudo" /></div>
           ) : (
             <div className="output-text placeholder">
               <div className="result-empty-state">
@@ -82,7 +85,7 @@ export function ResultPanel({ pseudonymized, depseudonymized, onAiResponseChange
             </button>
           </div>
           {depseudonymized ? (
-            <div className="output-text">{depseudonymized}</div>
+            <div className="output-text"><HighlightedText text={depseudonymized} mappings={mappings} mode="real" /></div>
           ) : (
             <div className="output-text placeholder">
               <div className="result-empty-state">

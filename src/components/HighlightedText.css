@@ -1,0 +1,14 @@
+/* ── PII highlight marks ───────────────────────────────────────────── */
+.pii-highlight {
+  border-radius: 2px;
+  color: inherit;
+}
+
+mark.pii-highlight[data-category="name"]          { background: var(--color-tag-name); }
+mark.pii-highlight[data-category="email"]         { background: var(--color-tag-email); }
+mark.pii-highlight[data-category="address"]       { background: var(--color-tag-address); }
+mark.pii-highlight[data-category="phone"]         { background: var(--color-tag-phone); }
+mark.pii-highlight[data-category="date_of_birth"] { background: var(--color-tag-dob); }
+mark.pii-highlight[data-category="id_number"]     { background: var(--color-tag-id); }
+mark.pii-highlight[data-category="company"]       { background: var(--color-tag-company); }
+mark.pii-highlight[data-category="other"]         { background: var(--color-tag-other); }

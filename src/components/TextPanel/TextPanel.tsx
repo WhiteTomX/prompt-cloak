@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import './TextPanel.css'
 import type { PiiCategory, PiiMapping } from '../../types'
 import type { AddMappingResult } from '../../hooks/useMappings'
 import { useTextSelection } from '../../hooks/useTextSelection'
 import { useToast } from '../Toast'
 import { SelectionPopup } from './SelectionPopup'
+import { HighlightedText } from '../HighlightedText'
 
 interface Props {
   value: string
@@ -18,6 +19,7 @@ interface Props {
 export function TextPanel({ value, onChange, mappings, onAddMapping, onUpdateMapping, active }: Props) {
   const { selection, textareaRef, handleSelect, clearSelection } = useTextSelection()
   const containerRef = useRef<HTMLDivElement>(null)
+  const backdropRef = useRef<HTMLDivElement>(null)
   const toast = useToast()
 
   // Close popup when clicking outside
@@ -49,6 +51,13 @@ export function TextPanel({ value, onChange, mappings, onAddMapping, onUpdateMap
     clearSelection()
   }
 
+  const syncScroll = useCallback(() => {
+    if (textareaRef.current && backdropRef.current) {
+      backdropRef.current.scrollTop = textareaRef.current.scrollTop
+      backdropRef.current.scrollLeft = textareaRef.current.scrollLeft
+    }
+  }, [textareaRef])
+
   return (
     <div ref={containerRef} style={{ display: 'contents' }}>
       <div className="panel" data-active={active}>
@@ -69,12 +78,16 @@ export function TextPanel({ value, onChange, mappings, onAddMapping, onUpdateMap
               </div>
             </div>
           )}
+          <div ref={backdropRef} className="text-panel-backdrop" aria-hidden="true">
+            <HighlightedText text={value} mappings={mappings} mode="real" />
+          </div>
           <textarea
             ref={textareaRef}
             value={value}
             onChange={e => onChange(e.target.value)}
             onMouseUp={handleSelect}
             onKeyUp={handleSelect}
+            onScroll={syncScroll}
             placeholder="Paste your text here. Select any sensitive word or phrase to pseudonymize it."
             spellCheck={false}
           />
