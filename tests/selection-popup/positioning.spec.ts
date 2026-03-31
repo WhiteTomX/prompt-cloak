@@ -89,7 +89,7 @@ test.describe('Selection Popup — Positioning', () => {
     await page.goto('http://localhost:5173');
 
     // Set a small viewport height so the popup cannot fit below the selection
-    await page.setViewportSize({ width: 1280, height: 300 });
+    await page.setViewportSize({ width: 1280, height: 200 });
 
     await page.getByRole('textbox', { name: 'Paste your text here. Select any sensitive word or phrase to pseudonymize it.' }).fill('My name is John Smith and I work at Acme Corp');
 

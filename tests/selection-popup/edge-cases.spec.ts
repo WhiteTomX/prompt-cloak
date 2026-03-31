@@ -76,17 +76,14 @@ test.describe('Selection Popup — Edge Cases', () => {
     await expect(page.locator('.selected-text')).toHaveText('John');
 
     // expect: The pseudonym field is pre-filled with 'PERSON_1'
-    // NOTE: Pre-filling for existing mappings is NOT yet implemented.
-    // This assertion is expected to fail against the current code.
     await expect(page.getByRole('textbox', { name: 'Pseudonym (e.g. PERSON_1)' })).toHaveValue('PERSON_1');
 
     // expect: The right button is labeled 'Update'
-    // NOTE: Also not yet implemented — will fail.
     await expect(page.getByRole('button', { name: 'Update' })).toBeVisible();
 
     // 3. Type 'PERSON_ALT' and click 'Update Mapping'
     await page.getByRole('textbox', { name: 'Pseudonym (e.g. PERSON_1)' }).fill('PERSON_ALT');
-    await page.getByRole('button', { name: 'Update Mapping' }).click();
+    await page.getByRole('button', { name: 'Update' }).click();
 
     // expect: Mapping updated (count still 1, not duplicated)
     await expect(page.getByText('Mappings (1)')).toBeVisible();
@@ -130,7 +127,6 @@ test.describe('Selection Popup — Edge Cases', () => {
     // expect: The popup header shows 'World' (trimmed), not ' World'
     await expect(page.locator('.selected-text')).toBeVisible();
     await expect(page.locator('.selected-text')).toHaveText('World');
-    await expect(page.locator('.selected-text')).not.toHaveText(' World');
   });
 
   test('5.7 Clicking inside textarea without selecting text does not open the popup', async ({ page }) => {

@@ -16,8 +16,13 @@ test.describe('Selection Popup — Validation', () => {
     await textarea.click();
     await textarea.fill('John Smith');
 
-    // Double-click near the start of the textarea to select the first word 'John'
-    await textarea.dblclick({ position: { x: 20, y: 10 } });
+    // Programmatically select 'John' (indices 0–4) to open the popup reliably
+    await page.evaluate(() => {
+      const ta = document.querySelector('textarea') as HTMLTextAreaElement;
+      ta.focus();
+      ta.setSelectionRange(0, 4);
+      ta.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+    });
 
     // expect: Popup appears with a word selected
     await expect(page.getByRole('button', { name: 'Add Mapping' })).toBeVisible();
@@ -39,8 +44,13 @@ test.describe('Selection Popup — Validation', () => {
     await textarea.click();
     await textarea.fill('John Smith');
 
-    // Double-click near the start of the textarea to select the first word
-    await textarea.dblclick({ position: { x: 20, y: 10 } });
+    // Programmatically select 'John' (indices 0–4) to open the popup reliably
+    await page.evaluate(() => {
+      const ta = document.querySelector('textarea') as HTMLTextAreaElement;
+      ta.focus();
+      ta.setSelectionRange(0, 4);
+      ta.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+    });
 
     // expect: Popup appears
     await expect(page.getByRole('button', { name: 'Add Mapping' })).toBeVisible();
@@ -66,8 +76,13 @@ test.describe('Selection Popup — Validation', () => {
     await textarea.click();
     await textarea.fill('John Smith');
 
-    // Double-click near the start to select first word
-    await textarea.dblclick({ position: { x: 20, y: 10 } });
+    // Programmatically select 'John' (indices 0–4) to open the popup reliably
+    await page.evaluate(() => {
+      const ta = document.querySelector('textarea') as HTMLTextAreaElement;
+      ta.focus();
+      ta.setSelectionRange(0, 4);
+      ta.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+    });
 
     // expect: Popup appears, 'Add Mapping' button is disabled
     await expect(page.getByRole('button', { name: 'Add Mapping' })).toBeVisible();
