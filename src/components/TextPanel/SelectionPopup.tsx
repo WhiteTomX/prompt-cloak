@@ -32,9 +32,12 @@ export function SelectionPopup({ selectedText, anchorRect, onConfirm, onCancel }
     inputRef.current?.focus()
   }, [])
 
-  // Position below the anchor
-  const top = anchorRect.bottom + 8 + window.scrollY
-  const left = Math.min(anchorRect.left + window.scrollX, window.innerWidth - 280)
+  // Position below the selected text, flip above if not enough space
+  const popupHeight = 160
+  const popupWidth = 260
+  const fitsBelow = anchorRect.bottom + 8 + popupHeight < window.innerHeight
+  const top = fitsBelow ? anchorRect.bottom + 8 : anchorRect.top - popupHeight - 8
+  const left = Math.min(anchorRect.left, window.innerWidth - popupWidth - 8)
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
